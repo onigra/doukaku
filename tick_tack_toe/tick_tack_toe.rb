@@ -27,8 +27,11 @@ class TickTackToe
 
   def game
     @input.scan(/[1-9]/).each_with_index do |item, idx|
-      break if idx == 8
-      idx = idx + 1
+      if last?(idx)
+        break
+      else
+        idx = idx + 1
+      end
 
       break if foul_check(idx, item)
       break if win_check(idx, item)
@@ -76,5 +79,9 @@ class TickTackToe
 
   def senkou?(index)
     (index % 2) != 0
+  end
+
+  def last?(index)
+    index == 8
   end
 end
