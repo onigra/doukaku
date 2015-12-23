@@ -27,7 +27,7 @@ class TickTackToe
 
   def game
     @input.scan(/[1-9]/).each_with_index do |item, idx|
-      if last?(idx)
+      if full?(idx)
         break
       else
         junban = Junban.now(idx)
@@ -79,7 +79,7 @@ class TickTackToe
     end
   end
 
-  def last?(index)
+  def full?(index)
     index == 8
   end
 end
