@@ -39,7 +39,7 @@ class TickTackToe
   end
 
   def foul_check(junban, item)
-    if @keika.include?(item)
+    if foul?(item)
       case junban
       when :senkou
         @result = "Foul : x won."
@@ -55,17 +55,13 @@ class TickTackToe
   def win_check(junban, item)
     case junban
     when :senkou
-      @senkou << item.to_i
-
-      if win?(@senkou)
+      if win?(@senkou << item.to_i)
         @result = "o won."
       else
         false
       end
     else
-      @koukou << item.to_i
-
-      if win?(@koukou)
+      if win?(@koukou << item.to_i)
         @result = "x won."
       else
         false
@@ -79,6 +75,10 @@ class TickTackToe
 
   def win?(list)
     WIN_PATTERN.map { |i| list.sort.join =~ /#{i}/ }.any? { |w| w != nil }
+  end
+
+  def foul?(item)
+    @keika.include?(item)
   end
 end
 
