@@ -42,9 +42,9 @@ class TickTackToe
     if @keika.include?(item)
       case junban
       when :senkou
-        return @result = "Foul : x won."
+        @result = "Foul : x won."
       else
-        return @result = "Foul : o won."
+        @result = "Foul : o won."
       end
     else
       @keika << item
@@ -58,7 +58,7 @@ class TickTackToe
       @senkou << item.to_i
 
       if WIN_PATTERN.map { |i| @senkou.sort.join =~ /#{i}/ }.any? { |w| w != nil }
-        return @result = "o won."
+        @result = "o won."
       else
         false
       end
@@ -66,7 +66,7 @@ class TickTackToe
       @koukou << item.to_i
 
       if WIN_PATTERN.map { |i| @koukou.sort.join =~ /#{i}/ }.any? { |w| w != nil }
-        return @result = "x won."
+        @result = "x won."
       else
         false
       end
