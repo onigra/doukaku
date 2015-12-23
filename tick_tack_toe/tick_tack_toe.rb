@@ -39,11 +39,11 @@ class TickTackToe
 
   def foul_check(idx, item)
     if @keika.include?(item)
-      if (idx % 2) == 0
-        @result = "Foul : o won."
+      if senkou?(idx)
+        @result = "Foul : x won."
         true
       else
-        @result = "Foul : x won."
+        @result = "Foul : o won."
         true
       end
     else
@@ -53,16 +53,7 @@ class TickTackToe
   end
 
   def win_check(idx, item)
-    if (idx % 2) == 0
-      @koukou << item.to_i
-
-      if WIN_PATTERN.map { |i| @koukou.sort.join =~ /#{i}/ }.any? { |w| w != nil }
-        @result = "x won."
-        true
-      else
-        false
-      end
-    else
+    if senkou?(idx)
       @senkou << item.to_i
 
       if WIN_PATTERN.map { |i| @senkou.sort.join =~ /#{i}/ }.any? { |w| w != nil }
@@ -71,6 +62,19 @@ class TickTackToe
       else
         false
       end
+    else
+      @koukou << item.to_i
+
+      if WIN_PATTERN.map { |i| @koukou.sort.join =~ /#{i}/ }.any? { |w| w != nil }
+        @result = "x won."
+        true
+      else
+        false
+      end
     end
+  end
+
+  def senkou?(index)
+    (index % 2) != 0
   end
 end
