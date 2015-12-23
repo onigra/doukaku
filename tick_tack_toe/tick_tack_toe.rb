@@ -57,7 +57,7 @@ class TickTackToe
     when :senkou
       @senkou << item.to_i
 
-      if WIN_PATTERN.map { |i| @senkou.sort.join =~ /#{i}/ }.any? { |w| w != nil }
+      if win?(@senkou)
         @result = "o won."
       else
         false
@@ -65,7 +65,7 @@ class TickTackToe
     else
       @koukou << item.to_i
 
-      if WIN_PATTERN.map { |i| @koukou.sort.join =~ /#{i}/ }.any? { |w| w != nil }
+      if win?(@koukou)
         @result = "x won."
       else
         false
@@ -75,6 +75,10 @@ class TickTackToe
 
   def full?(index)
     index == 8
+  end
+
+  def win?(list)
+    WIN_PATTERN.map { |i| list.sort.join =~ /#{i}/ }.any? { |w| w != nil }
   end
 end
 
