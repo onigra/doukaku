@@ -30,19 +30,20 @@ class TickTackToe
       if last?(idx)
         break
       else
-        idx = idx + 1
+        junban = Junban.now(idx)
       end
 
-      break if foul_check(idx, item)
-      break if win_check(idx, item)
+      break if foul_check(junban, item)
+      break if win_check(junban, item)
     end
 
     @result = "Draw game." if @result.nil?
   end
 
-  def foul_check(idx, item)
+  def foul_check(junban, item)
     if @keika.include?(item)
-      if senkou?(idx)
+      case junban
+      when :senkou
         @result = "Foul : x won."
         true
       else
@@ -55,8 +56,9 @@ class TickTackToe
     end
   end
 
-  def win_check(idx, item)
-    if senkou?(idx)
+  def win_check(junban, item)
+    case junban
+    when :senkou
       @senkou << item.to_i
 
       if WIN_PATTERN.map { |i| @senkou.sort.join =~ /#{i}/ }.any? { |w| w != nil }
@@ -77,11 +79,17 @@ class TickTackToe
     end
   end
 
-  def senkou?(index)
-    (index % 2) != 0
-  end
-
   def last?(index)
     index == 8
+  end
+end
+
+class Junban
+  def self.now(index)
+    if (index.next % 2) != 0
+      :senkou
+    else
+      :koukou
+    end
   end
 end
