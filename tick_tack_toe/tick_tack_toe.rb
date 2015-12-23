@@ -28,6 +28,7 @@ class TickTackToe
   def game
     @input.scan(/[1-9]/).each_with_index do |item, idx|
       if full?(idx)
+        @result = "Draw game."
         break
       else
         junban = Junban.now(idx)
@@ -36,8 +37,6 @@ class TickTackToe
       break if foul_check(junban, item)
       break if win_check(junban, item)
     end
-
-    @result = "Draw game." if @result.nil?
   end
 
   def foul_check(junban, item)
