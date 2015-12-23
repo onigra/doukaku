@@ -28,8 +28,7 @@ class TickTackToe
   def game
     @input.scan(/[1-9]/).each_with_index do |item, idx|
       if full?(idx)
-        @result = "Draw game."
-        break
+        return @result = "Draw game."
       else
         junban = Junban.now(idx)
       end
@@ -43,11 +42,9 @@ class TickTackToe
     if @keika.include?(item)
       case junban
       when :senkou
-        @result = "Foul : x won."
-        true
+        return @result = "Foul : x won."
       else
-        @result = "Foul : o won."
-        true
+        return @result = "Foul : o won."
       end
     else
       @keika << item
@@ -61,8 +58,7 @@ class TickTackToe
       @senkou << item.to_i
 
       if WIN_PATTERN.map { |i| @senkou.sort.join =~ /#{i}/ }.any? { |w| w != nil }
-        @result = "o won."
-        true
+        return @result = "o won."
       else
         false
       end
@@ -70,8 +66,7 @@ class TickTackToe
       @koukou << item.to_i
 
       if WIN_PATTERN.map { |i| @koukou.sort.join =~ /#{i}/ }.any? { |w| w != nil }
-        @result = "x won."
-        true
+        return @result = "x won."
       else
         false
       end
