@@ -1,105 +1,89 @@
 require "pp"
 
-class RegisterBase
-  attr_accessor :assign, :current
-
-  def initialize
-    @assign = nil
-    @current = 0
-  end
-
-  def exec
-    if @assign == "x"
-      @current += 1
-      @assign = nil
-    else
-      @current = @assign.to_i - @shori
-      @current < 0 ? @current = 0 : @current
-      @assign = nil
-    end
-  end
-
-  def do
-    unless @assign.nil?
-      if @assign == "x"
-        @current = 1
-      else
-        @current = @assign
-      end
-    end
-  end
-end
-
-class Register1 < RegisterBase
-  def initialize
-    super
-    @number = 1
-    @shori = 2
-  end
-end
-
-class Register2 < RegisterBase
-  def initialize
-    super
-    @number = 2
-    @shori = 7
-  end
-end
-
-class Register3 < RegisterBase
-  def initialize
-    super
-    @number = 3
-    @shori = 3
-  end
-end
-
-class Register4 < RegisterBase
-  def initialize
-    super
-    @number = 4
-    @shori = 5
-  end
-end
-
-class Register5 < RegisterBase
-  def initialize
-    super
-    @number = 5
-    @shori = 7
-  end
-end
-
 class Program
   def initialize
-    @result = nil
-    @registers = [
-      Register1.new,
-      Register2.new,
-      Register3.new,
-      Register4.new,
-      Register5.new,
+    @regis = [
+      { "1" => [] },
+      { "2" => [] },
+      { "3" => [] },
+      { "4" => [] },
+      { "5" => [] }
     ]
   end
 
   def run(input)
     foo = input.split("")
 
-    foo.each do |i|
-      if i == "."
-        @registers.each { |regi| regi.exec }
-      else
-        @registers.sort { |regi| regi.current }.each do |item|
-          if item.assign.nil?
-            item.assign = i
-            break
-          end
+    foo.each do |item|
+      if item == "."
+        @regis.each do |i|
+          regi1 i["1"] if i.keys.first == "1"
+          regi2 i["2"] if i.keys.first == "2"
+          regi3 i["3"] if i.keys.first == "3"
+          regi4 i["4"] if i.keys.first == "4"
+          regi5 i["5"] if i.keys.first == "5"
         end
+      elsif item == "x"
+        @regis.sort_by! { |i| [i.values.first.size, i.keys.first.to_i] }
+        @regis.first.values.first << item
+      else
+        @regis.sort_by! { |i| [i.values.first.size, i.keys.first.to_i] }
+        @regis.first.values.first << ("1" * item.to_i).split("")
+        @regis.first.values.first.flatten!
       end
-
-      pp @registers
     end
 
-    @registers.each { |i| i.do }.map(&:current).join(",")
+    @regis.sort_by! { |i| i.keys.first.to_i }
+    @regis.map { |i| i.values }.flatten(1).map(&:size).join(",")
+  end
+
+  def regi1(regi)
+    2.times do |i|
+      if regi.first == "x"
+        break
+      else
+        regi.shift 
+      end
+    end
+  end
+
+  def regi2(regi)
+    7.times do |i|
+      if regi.first == "x"
+        break
+      else
+        regi.shift 
+      end
+    end
+  end
+
+  def regi3(regi)
+    3.times do |i|
+      if regi.first == "x"
+        break
+      else
+        regi.shift 
+      end
+    end
+  end
+
+  def regi4(regi)
+    5.times do |i|
+      if regi.first == "x"
+        break
+      else
+        regi.shift 
+      end
+    end
+  end
+
+  def regi5(regi)
+    2.times do |i|
+      if regi.first == "x"
+        break
+      else
+        regi.shift 
+      end
+    end
   end
 end
